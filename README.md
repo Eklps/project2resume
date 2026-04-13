@@ -36,6 +36,12 @@
 **使用要求**：
 请确保 Agent 当前的工作区/上下文环境为您需要提取的项目代码库。
 
+### 📊 示例预览
+
+您可以在以下链接中查看技能的最终产出和完整执行流程：
+- [📄 完整生成的 HTML 简历示例 (点击查看源码)](./examples/sample-resume.html) _(注：建议下载该文件并在浏览器中打开以预览确切排版效果)_
+- [📋 完整的 Agent 对话与执行流程示例](./examples/sample-output.md)
+
 ### 📁 输出说明
 
 默认情况下，Agent 会在您的项目中生成以下文件：
@@ -75,6 +81,12 @@ Just tell your Agent:
 
 **Requirements**:
 The agent should be in a workspace containing your project code.
+
+### 📊 Examples
+
+You can view the final output and complete execution workflow of the skill in the following links:
+- [📄 Sample generated HTML Resume (Click to view source)](./examples/sample-resume.html) _(Note: Recommend downloading this file and opening it in a web browser for the exact layout preview)_
+- [📋 Complete Agent Execution Workflow Example](./examples/sample-output.md)
 
 ### 📁 Output Formats
 
