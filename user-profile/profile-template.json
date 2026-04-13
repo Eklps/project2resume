@@ -1,0 +1,21 @@
+{
+  "_comment": "此文件为用户信息模板。Agent 首次运行时根据此模板引导用户填写，用户填写后保存为同目录下的 profile.json。",
+  "name": "",
+  "phone": "",
+  "email": "",
+  "wechat": "",
+  "github_url": "",
+  "target_position": "",
+  "availability": "",
+  "photo_path": "",
+  "education": {
+    "university": "",
+    "badges": [],
+    "major": "",
+    "degree": "",
+    "start_date": "",
+    "end_date": ""
+  },
+  "certificates": "",
+  "custom_skills": []
+}

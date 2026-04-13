@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张三 — 个人简历</title>
+    <style>
+        /* --- 打印控制：强制 A4 纸，取消浏览器默认页边距 --- */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        /* 全局设置 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background-color: #555;
+            margin: 0;
+            padding: 20px;
+            font-size: 13.5px;
+        }
+
+        /* A4 纸张模拟 */
+        .resume-container {
+            width: 210mm;
+            height: 296mm;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px 30px;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .resume-container { 
+                box-shadow: none; 
+                margin: 0; 
+                width: 100%; 
+                height: auto; 
+                padding: 20px 25px;
+            }
+        }
+
+        /* --- 头部区域 --- */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 0px;
+            border-bottom: none;
+            margin-bottom: 5px;
+        }
+
+        .header-info {
+            flex: 1;
+            padding-top: 5px;
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0 0 8px 0;
+            line-height: 1;
+        }
+
+        .contact-info {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.35;
+        }
+
+        .contact-info span {
+            margin-right: 15px;
+        }
+
+        /* 复制按钮交互样式 */
+        .copy-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0 6px;
+            margin: 0 6px 2px 0;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+        }
+
+        .copy-item:hover {
+            background: rgba(0, 0, 0, 0.04);
+            border-color: rgba(0, 0, 0, 0.12);
+            transform: translateY(0);
+        }
+
+        .copy-item:active {
+            transform: translateY(0);
+        }
+
+        .copy-item .copy-label {
+            font-weight: 600;
+        }
+
+        .copy-item.copied {
+            background: rgba(32, 201, 151, 0.12);
+            border-color: rgba(32, 201, 151, 0.35);
+        }
+
+        .copy-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%) translateY(12px);
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: rgba(25, 25, 25, 0.92);
+            color: #fff;
+            font-size: 13px;
+            line-height: 1;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            z-index: 9999;
+        }
+
+        .copy-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* 标题部分 */
+        h2 {
+            font-size: 16px;
+            color: #2c6e9e;
+            border-bottom: 2px solid #2c6e9e;
+            padding-bottom: 3px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 15px;
+            margin: 6px 0 4px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .title-left {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 12px;
+            font-weight: normal;
+            background-color: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+            padding: 0 4px;
+            border-radius: 2px;
+            line-height: 16px;
+            transform: scale(0.95);
+        }
+
+        .text-sub {
+            font-weight: normal;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .date {
+            color: #666;
+            font-weight: normal;
+            font-size: 13px;
+        }
+
+        .tech-stack-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 4px 0 6px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tech-label {
+            font-weight: bold;
+            color: #2c6e9e;
+            font-size: 13px;
+        }
+
+        .tech-tag {
+            background-color: #e6f7ff;
+            color: #007acc;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: Consolas, Monaco, monospace;
+        }
+
+        ul {
+            padding-left: 18px;
+            margin: 2px 0;
+        }
+
+        li {
+            margin-bottom: 3px;
+            color: #333;
+            text-align: justify;
+            font-size: 13.5px;
+            line-height: 1.4;
+        }
+
+        .bold-key {
+            font-weight: bold;
+            color: #000;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* 仓库链接样式 */
+        .repo-link {
+            font-size: 12px;
+            font-weight: normal;
+            color: #666;
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            padding: 1px 6px;
+            border-radius: 4px;
+            background-color: #fafafa;
+            transition: all 0.2s;
+        }
+
+        .repo-link:hover {
+            background-color: #f0f0f0;
+            color: #2c6e9e;
+            border-color: #2c6e9e;
+        }
+
+        /* h3 布局比例 */
+        h3 .title-left { flex: 1.5; justify-content: flex-start; }
+        h3 .text-sub { flex: 1; text-align: center; }
+        h3 .date { flex: 1.2; text-align: right; }
+
+    </style>
+</head>
+<body contenteditable="false"> 
+    
+    <div class="resume-container">
+        
+        <!-- ==================== 头部：个人信息 ==================== -->
+        <div class="header">
+            <div class="header-info">
+                <div class="name">张三</div>
+                
+                <div class="contact-info">
+                    <div>
+                        <button type="button" class="copy-item" data-copy="13800138000" data-label="电话">
+                            <span class="copy-label">电话:</span>
+                            <span>138-0013-8000</span>
+                        </button>
+                        <button type="button" class="copy-item" data-copy="zhangsan@example.com" data-label="邮箱">
+                            <span class="copy-label">邮箱:</span>
+                            <span>zhangsan@example.com</span>
+                        </button>
+                        <br>
+                        <button type="button" class="copy-item" data-copy="zhangsan_dev" data-label="微信">
+                            <span class="copy-label">微信:</span>
+                            <span>zhangsan_dev</span>
+                        </button>
+                    </div>
+                    <div style="margin-top: 4px;">
+                        <span>求职意向: Java 后端开发工程师</span>
+                        <br>
+                        <span>到岗时间：随时到岗</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== 教育背景 ==================== -->
+        <h2>教育背景</h2>
+        <h3>
+            <div class="title-left">
+                北京大学
+                <span class="badge">985</span>
+                <span class="badge">211</span>
+                <span class="badge">双一流</span>
+            </div>
+            <div class="text-sub">计算机科学与技术</div>
+            <div class="date">2021.09 - 2025.06</div>
+        </h3>
+        <div style="margin-top: 6px; font-size: 13.5px; color: #555; line-height: 1.4;">
+            <span style="font-weight: bold; color: #2c6e9e; font-size: 14px;">证书：</span>CET-4、CET-6、蓝桥杯全国二等奖
+        </div>
+
+        <!-- ==================== 项目经历 ==================== -->
+        <h2>项目经历</h2>
+
+        <!-- 项目一 -->
+        <h3>
+            <div class="title-left">
+                智慧校园服务平台
+                <a href="https://github.com/example/smart-campus" target="_blank" class="repo-link">
+                    <svg height="12" width="12" viewBox="0 0 16 16" style="fill:currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    GitHub
+                </a>
+            </div>
+            <div class="text-sub">后端开发</div>
+            <div class="date">2024.09 - 至今</div>
+        </h3>
+        <div class="tech-stack-row">
+            <span class="tech-label">技术栈:</span>
+            <span class="tech-tag">Spring Boot 3.x</span>
+            <span class="tech-tag">MyBatis-Plus</span>
+            <span class="tech-tag">Redis</span>
+            <span class="tech-tag">RabbitMQ</span>
+            <span class="tech-tag">MySQL</span>
+            <span class="tech-tag">Docker</span>
+        </div>
+        <ul>
+            <li><strong>高并发选课架构</strong>：针对选课高峰期数据库行锁引发的并发瓶颈，采用 <strong>Redis + Lua 脚本</strong>实现原子性的名额判定与预扣减，结合 <strong>RabbitMQ</strong> 异步削峰入库，经 JMeter 压测 QPS 提升约 4 倍，消除了选课超额问题。</li>
+            <li><strong>多级缓存防护体系</strong>：构建分层缓存防护网，通过<strong>布隆过滤器</strong>拦截非法请求应对缓存穿透，采用<strong>逻辑过期+独立线程池</strong>异步重建热点数据防击穿。自研基于泛型与函数式回调的 <strong>CacheClient</strong> 工具类，复用率提升 60%。</li>
+            <li><strong>统一认证与权限管理</strong>：基于 <strong>JWT + Spring Security</strong> 设计无状态认证体系，实现多端登录互踢和 Token 滑动续签。引入 <strong>RBAC 权限模型</strong>，覆盖 45 个 RESTful API 的细粒度访问控制。</li>
+            <li><strong>容器化部署与 CI/CD</strong>：基于 <strong>Docker Compose</strong> 编排 MySQL、Redis、RabbitMQ 等 5 个服务组件，配合 <strong>GitHub Actions</strong> 实现代码推送后自动构建、测试与部署，发布效率提升 70%。</li>
+        </ul>
+
+        <!-- 项目二 -->
+        <h3>
+            <div class="title-left">
+                在线协作文档系统
+                <a href="https://github.com/example/collab-docs" target="_blank" class="repo-link">
+                    <svg height="12" width="12" viewBox="0 0 16 16" style="fill:currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                    GitHub
+                </a>
+            </div>
+            <div class="text-sub">全栈开发</div>
+            <div class="date">2024.03 - 2024.08</div>
+        </h3>
+        <div class="tech-stack-row">
+            <span class="tech-label">技术栈:</span>
+            <span class="tech-tag">Spring Boot</span>
+            <span class="tech-tag">WebSocket</span>
+            <span class="tech-tag">Vue 3</span>
+            <span class="tech-tag">Redis</span>
+            <span class="tech-tag">MySQL</span>
+            <span class="tech-tag">Elasticsearch</span>
+        </div>
+        <ul>
+            <li><strong>实时协同编辑引擎</strong>：基于 <strong>WebSocket + STOMP</strong> 协议构建双向实时通信通道，采用 <strong>OT（Operational Transformation）算法</strong>解决多人并发编辑时的冲突合并问题，支持 20 人同时在线编辑同一文档。</li>
+            <li><strong>全文搜索与智能推荐</strong>：集成 <strong>Elasticsearch</strong> 构建文档全文搜索引擎，通过 <strong>IK 分词器</strong>优化中文搜索效果，搜索响应时间控制在 50ms 以内。结合用户行为数据实现基于协同过滤的文档推荐。</li>
+            <li><strong>分布式会话与数据一致性</strong>：采用 <strong>Redis</strong> 实现分布式 Session 管理，通过 <strong>Redisson 分布式锁</strong>保障并发操作下的数据一致性，结合<strong>版本号乐观锁</strong>实现文档的无损并发更新。</li>
+        </ul>
+
+        <!-- ==================== 专业技能 ==================== -->
+        <h2>专业技能</h2>
+        <ul>
+            <li><span class="bold-key">基础与架构：</span>扎实的 Java 核心基础，深入理解 JVM 原理与 JUC 并发编程；具备良好的工程化思维，熟练应用 MVC 架构与常用设计模式（策略、工厂、责任链）。</li>
+            <li><span class="bold-key">数据库与缓存：</span>深入理解 MySQL 索引与事务机制；深度应用 Redis，除常规缓存方案外，能熟练运用高级数据结构与 Lua 脚本解决高并发场景挑战。</li>
+            <li><span class="bold-key">框架应用与原理：</span>熟练使用 Spring Boot 体系，深度掌握 IoC/DI、AOP 及常用注解背后的实现逻辑；熟悉 Bean 生命周期管理，能针对复杂业务灵活进行组件解耦。</li>
+            <li><span class="bold-key">搜索与中间件：</span>熟悉 Elasticsearch 全文搜索引擎的索引设计与查询优化；掌握 RabbitMQ 消息队列的可靠投递与消费确认机制。</li>
+            <li><span class="bold-key">DevOps 与工程化：</span>熟练使用 Docker 容器化部署与 Docker Compose 编排；具备 GitHub Actions CI/CD 流水线搭建与 Nginx 反向代理配置经验。</li>
+        </ul>
+
+    </div>
+
+<!-- 复制交互功能 -->
+<div id="copy-toast" class="copy-toast" aria-live="polite"></div>
+<script>
+(() => {
+    const toast = document.getElementById('copy-toast');
+    let toastTimer = null;
+
+    function showToast(message) {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1400);
+    }
+
+    async function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        }
+
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
+    document.querySelectorAll('.copy-item').forEach((item) => {
+        item.addEventListener('click', async () => {
+            const value = item.dataset.copy || '';
+            const label = item.dataset.label || '内容';
+
+            try {
+                await copyText(value);
+                item.classList.add('copied');
+                showToast(`${label}已复制`);
+                setTimeout(() => item.classList.remove('copied'), 800);
+            } catch (err) {
+                showToast(`${label}复制失败`);
+            }
+        });
+    });
+})();
+</script>
+</body></html>
